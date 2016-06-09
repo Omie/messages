@@ -1,0 +1,51 @@
+
+
+why go-restful?
+
+    - it comes with good set up helper functions and tools along with.
+    Its really easy to keep adding features to this api, add more control,
+    support CORS may be. Its all included
+
+
+    - it helps cleaner organization of code, controller is only registering handlers,
+    keeping track of parameters, that are only related to that particular resource
+    - methods take care of handling the requests
+
+    - may be another reason for liking this approach is its similarity with django framework's URLs.py per project.
+    really easy to understand, keep it short per resource.
+
+    - other option I had to simplify routing was gorilla mux
+    it is good as well but its sort of limiting. It doesn't have much of helper functions as much as go-restful provides
+
+
+    - go-restful also supports swagger. swagger helps a lot while playing with the API,
+    its like Postman tool + much more. We can document it right in code and swagger picks it up.
+    swagger also figures out struct types (if we are taking them as input). It requires very little setup to do and I'll
+    add it if you just want to check it out.
+
+
+why sqlite?
+
+    - well, portable. serves the purpose of this assignment.
+
+why UUID as message identifier instead of their numeric IDs?
+
+    - this is really just for the sake of my opinion. I did not want to expose IDs of the messages that are in the db.
+    It really doesn't matter right now, but if it _could_ matter, I prefer having random IDs that users can't guess.
+    - Apart from exposing our primary keys, it is also possible to just iterate over sequential IDs and get whole dump
+    of database on remote end. Unique ids just help preventing that.
+    - Note that uuid column is not my primary key. We do have numeric Id column as a primary key in the db for our use
+    which can be used for other reference purposes
+    - I am aware that my use of uuid as a string adds overhead. strings are evil for lookup. even though we have index
+    on strings, its insertion cost is higher than that of autonumber column
+    - however, it is to be decided over the tradeof and what is on priority, is it performance or other factors
+
+
+about models:
+
+    - I like this pattern that I learned with django framework. Everything about that model and it's data is at one place.
+    - It is responsible to do the database interaction to insert, select operations on its own as well
+    - If there's anything related to how data is managed w.r.t Message entity, I know exactly where to look at!
+
+
+

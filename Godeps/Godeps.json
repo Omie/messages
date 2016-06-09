@@ -1,6 +1,9 @@
 {
 	"ImportPath": "github.com/omie/messages",
 	"GoVersion": "go1.5",
+	"Packages": [
+		"./..."
+	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
