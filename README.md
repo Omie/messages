@@ -23,15 +23,14 @@ Edit `test_run.sh` to set environment variables accordingly and do `./test_run.s
 API
 ----
 
-endpoint `/messages`
+
+- endpoint `/messages`
 
     - POST:
     param `text` : string : message to store
 
-endpoint `/messages/<id>`
-    - GET
+- endpoint `/messages/<id>`
+
+    - GET:
     retrive stored message
-
-
-
 
