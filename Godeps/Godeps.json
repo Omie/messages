@@ -1,0 +1,30 @@
+{
+	"ImportPath": "github.com/omie/messages",
+	"GoVersion": "go1.5",
+	"Deps": [
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.8.7",
+			"Rev": "418b41d23a1bf978c06faea5313ba194650ac088"
+		},
+		{
+			"ImportPath": "github.com/emicklei/go-restful",
+			"Comment": "v1.1.3-99-g8fe9edc",
+			"Rev": "8fe9edc3345c61dc3b82a69dd75e053f70bac253"
+		},
+		{
+			"ImportPath": "github.com/gorilla/schema",
+			"Rev": "08023a0215e7fc27a9aecd8b8c50913c40019478"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Comment": "v1.1.0-69-g38ee283",
+			"Rev": "38ee283dabf11c9cbdb968eebd79b1fa7acbabe6"
+		},
+		{
+			"ImportPath": "github.com/satori/go.uuid",
+			"Comment": "v1.1.0",
+			"Rev": "879c5887cd475cd7864858769793b2ceb0d44feb"
+		}
+	]
+}
