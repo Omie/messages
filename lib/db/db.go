@@ -28,6 +28,7 @@ func InitDB(driver, dbname string) error {
 	if err != nil {
 		return errors.New("Error opening connection to the db")
 	}
+	defer db.Close()
 
 	if createDb {
 		if err = syncDB(db); err != nil {
