@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -13,6 +14,42 @@ import (
 	"github.com/omie/messages/lib/db"
 )
 
+// check environment parameters and setup database
+func setupDB() error {
+	// get parameters and initialize the database
+	dbDriver := os.Getenv("MESSAGES_DB_DRIVER")
+	dbName := os.Getenv("MESSAGES_DB_NAME")
+	if dbDriver == "" || dbName == "" {
+		return errors.New("main: db driver or db name not set")
+	}
+
+	if err := db.InitDB(dbDriver, dbName); err != nil {
+		return err
+	}
+	return nil
+}
+
+// check environment parameters and setup http server
+func setupServer() (*http.Server, error) {
+	// get parameters and initialize the server
+	host := os.Getenv("MESSAGES_SERVER_HOST")
+	port := os.Getenv("MESSAGES_SERVER_PORT")
+	if host == "" || port == "" {
+		return nil, errors.New("main: host or port not set")
+	}
+	// make sure port is a number
+	intPort, err := strconv.ParseInt(port, 10, 64)
+	if err != nil {
+		return nil, errors.New("port must be a number")
+	}
+
+	server := &http.Server{
+		Addr:    fmt.Sprintf("%s:%d", host, intPort),
+		Handler: api.Container,
+	}
+	return server, nil
+}
+
 /*
 entry point of the program
 	- initializes database
@@ -23,36 +60,15 @@ return fatal error on failure
 func main() {
 	log.SetLevel(log.DebugLevel)
 
-	// get parameters and initialize the database
-	dbDriver := os.Getenv("MESSAGES_DB_DRIVER")
-	dbName := os.Getenv("MESSAGES_DB_NAME")
-	if dbDriver == "" || dbName == "" {
-		log.Error("main: db driver or db name not set")
-		return
+	if err := setupDB(); err != nil {
+		log.Fatal(err)
 	}
 
-	if err := db.InitDB(dbDriver, dbName); err != nil {
-		log.Error("Error initializing database", err.Error())
-		return
-	}
-
-	// get parameters and initialize the server
-	host := os.Getenv("MESSAGES_SERVER_HOST")
-	port := os.Getenv("MESSAGES_SERVER_PORT")
-	if host == "" || port == "" {
-		log.Error("main: host or port not set")
-		return
-	}
-	// make sure port is a number
-	intPort, err := strconv.ParseInt(port, 10, 64)
+	server, err := setupServer()
 	if err != nil {
-		log.Fatal("port must be a number")
+		log.Fatal("error setting up server: ", err)
 	}
 
-	server := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", host, intPort),
-		Handler: api.Container,
-	}
 	log.Println("--- listening on ", server.Addr)
 	err = server.ListenAndServe()
 	if err != nil {

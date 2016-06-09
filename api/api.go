@@ -20,7 +20,7 @@ func AddWebService(ws *restful.WebService) {
 	Container.Add(ws)
 }
 
-// helper function to emit error
+// abstracted helper function to emit error
 func ErrorResponse(response *restful.Response, httpStatus int, err string) {
 	log.Error(err)
 	response.AddHeader("Content-Type", "text/plain")

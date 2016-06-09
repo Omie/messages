@@ -50,7 +50,7 @@ func syncDB(db *sql.DB) error {
 	createMessagesTable := `CREATE TABLE messages (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 uuid char(32) UNIQUE NOT NULL,
-                text char(160)   NOT NULL,
+                text text  NOT NULL,
                 created_on TIMESTAMP default CURRENT_TIMESTAMP
             );`
 	_, err := db.Exec(createMessagesTable, nil)

@@ -40,7 +40,6 @@ func (self *Message) Validate() error {
 // prepare and insert the message into the database
 // returns error or nil
 func (self *Message) Create() error {
-	log.Debug("--- Message.Create ")
 	db, err := db.GetDB()
 	if err != nil {
 		return err
@@ -72,8 +71,6 @@ func (self *Message) Create() error {
 // returns Message object on success
 // returns error in case of error
 func GetByUUID(uuid string) (*Message, error) {
-	log.Debug("--- GetbyUUID")
-
 	db, err := db.GetDB()
 	if err != nil {
 		return nil, err

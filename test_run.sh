@@ -8,4 +8,5 @@ export MESSAGES_DB_NAME=dbtest.sqlite
 
 go get
 go test test/messages_test.go
+rm test/dbtest.sqlite
 
