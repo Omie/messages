@@ -2,6 +2,7 @@ package message
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -23,41 +24,28 @@ type Message struct {
 var ErrMessageNotFound = errors.New("Message Not Found")
 var ErrValidationError = errors.New("Message Text cannot be empty")
 
-// validates if the object is okay to insert in the db
-// returns error if the object is invalid
-// returns nil if the object is valid
-func (self *Message) Validate() error {
-	if self.Text == "" {
-		return ErrValidationError
-	}
-	return nil
-}
-
 // prepare and insert the message into the database
 // returns error or nil
 func Create(text string) (*Message, error) {
+	if strings.TrimSpace(text) == "" {
+		return nil, ErrValidationError
+	}
+
 	db, err := db.GetDB()
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
 
-	newMessage := &Message{
-		Text: text,
-		Uuid: uuid.NewV1().String(),
-	}
-	if err := newMessage.Validate(); err != nil {
-		return nil, err
-	}
-
+	newUUID := uuid.NewV1().String()
 	insertQuery := `INSERT INTO messages(uuid, text) VALUES(?, ?)`
-	_, err = db.Exec(insertQuery, newMessage.Uuid, newMessage.Text)
+	_, err = db.Exec(insertQuery, newUUID, text)
 	if err != nil {
 		log.Error("Message.Create: ", err)
 		return nil, err
 	}
 
-	return GetByUUID(newMessage.Uuid)
+	return GetByUUID(newUUID)
 }
 
 // Retrive a message using given uuid
