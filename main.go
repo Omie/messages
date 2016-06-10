@@ -10,7 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 
 	"github.com/omie/messages/api"
-	_ "github.com/omie/messages/api/messages"
+	_ "github.com/omie/messages/api/v1/messages"
 	"github.com/omie/messages/lib/db"
 )
 
