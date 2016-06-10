@@ -13,6 +13,20 @@ why go-restful?
     particular resource
     - methods take care of handling the requests
 
+    - easier versioning
+    if I have to add v2 of api then I only have to copy v1 to v2, then updated path in v2/messages controller to something like
+    `/v2/messages` and it's done.
+    `apiv1.go` only serves the purpose of keeping it simple. It only adds the given `ws` with correctly versioned prefix.
+    Hence, if we have like 50 endpoints in v1 already then, when we copy v1 to v2, we don't have to update Path at 50 places to add
+    version prefix. We could only update `apiv2.go` with 2 lines
+
+        // helper function to prefix version path and add WebService in parent container
+        func AddWebService(ws *restful.WebService) {
+            root := ws.RootPath()
+            ws.Path("/v2/" + root) // <--- this
+            api.AddWebService(ws)
+        }
+
     - other option I had to simplify routing was gorilla mux
     it is good as well but its sort of limiting. It doesn't have much of helper functions as much as go-restful provides
 
