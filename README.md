@@ -23,7 +23,7 @@ Edit `test_run.sh` to set environment variables accordingly and do `./test_run.s
 API
 ----
 
-documentation is at https://docs.messages19.apiary.io/
+documentation is at http://docs.messages19.apiary.io/
 
 - endpoint `/messages`
 
