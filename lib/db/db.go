@@ -1,14 +1,15 @@
 package db
 
 import (
-	"database/sql"
 	"errors"
 	"os"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var dbDriver, dbName string
+var db *sqlx.DB
 
 // checks if local database exists, saves the references for use if it does
 // param: driver: string: sql driver name
@@ -21,12 +22,11 @@ func InitDB(driver, dbname string) error {
 		return errors.New("database does not exist:" + dbname)
 	}
 
-	db, err := sql.Open(driver, dbname)
+	db, err := sqlx.Connect(driver, dbname)
 	if err != nil {
-		return errors.New("Error opening connection to the db")
+		return errors.New("Error opening connection to the db:" + err.Error())
 	}
 	defer db.Close()
-
 	dbDriver = driver
 	dbName = dbname
 
@@ -35,6 +35,6 @@ func InitDB(driver, dbname string) error {
 
 // returns a new connection to the database
 // returns sql.DB instance on success or returns error
-func GetDB() (*sql.DB, error) {
-	return sql.Open(dbDriver, dbName)
+func GetDB() (*sqlx.DB, error) {
+	return sqlx.Open(dbDriver, dbName)
 }

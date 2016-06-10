@@ -35,31 +35,29 @@ func (self *Message) Validate() error {
 
 // prepare and insert the message into the database
 // returns error or nil
-func (self *Message) Create() error {
+func Create(text string) (*Message, error) {
 	db, err := db.GetDB()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer db.Close()
 
-	self.Uuid = uuid.NewV1().String()
-	if err := self.Validate(); err != nil {
-		return err
+	newMessage := &Message{
+		Text: text,
+		Uuid: uuid.NewV1().String(),
+	}
+	if err := newMessage.Validate(); err != nil {
+		return nil, err
 	}
 
-	stmt, err := db.Prepare("INSERT INTO messages(uuid, text) VALUES(?, ?)")
+	insertQuery := `INSERT INTO messages(uuid, text) VALUES(?, ?)`
+	_, err = db.Exec(insertQuery, newMessage.Uuid, newMessage.Text)
 	if err != nil {
 		log.Error("Message.Create: ", err)
-		return err
+		return nil, err
 	}
-	defer stmt.Close()
 
-	_, err = stmt.Exec(self.Uuid, self.Text)
-	if err != nil {
-		log.Error("Message.Create: ", err)
-		return err
-	}
-	return nil
+	return GetByUUID(newMessage.Uuid)
 }
 
 // Retrive a message using given uuid
@@ -73,19 +71,20 @@ func GetByUUID(uuid string) (*Message, error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT id, uuid, text, created_on FROM messages WHERE uuid = ?", uuid)
+	row, err := db.Queryx("SELECT id, uuid, text, created_on FROM messages WHERE uuid = ?", uuid)
 	if err != nil {
-		log.Error("GetByUUID: ", err)
 		return nil, err
 	}
-	defer rows.Close()
+	defer row.Close()
 
-	var message Message
-	if rows.Next() {
-		message = Message{}
-		rows.Scan(&message.Id, &message.Uuid, &message.Text, &message.CreatedOn)
-	} else {
-		return nil, ErrMessageNotFound
+	if row.Next() {
+		var message Message
+		err = row.StructScan(&message)
+		if err != nil {
+			return nil, err
+		}
+		return &message, nil
 	}
-	return &message, nil
+
+	return nil, ErrMessageNotFound
 }

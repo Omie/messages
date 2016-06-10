@@ -42,15 +42,15 @@ func createMessage(request *restful.Request, response *restful.Response) {
 		return
 	}
 
-	newMessage := new(message.Message)
-	err = decoder.Decode(newMessage, request.Request.PostForm)
-	if err != nil {
-		api.ErrorResponse(response, http.StatusBadRequest, err.Error())
+	_text, ok := request.Request.PostForm["text"]
+	if !ok {
+		api.ErrorResponse(response, http.StatusBadRequest, "text is required")
 		return
 	}
+	text := _text[0]
 
 	// insert the message into the database
-	err = newMessage.Create()
+	newMessage, err := message.Create(text)
 	if err != nil {
 		if err == message.ErrValidationError {
 			api.ErrorResponse(response, http.StatusBadRequest, err.Error())
