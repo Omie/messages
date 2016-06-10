@@ -60,5 +60,7 @@ func createMessage(request *restful.Request, response *restful.Response) {
 		return
 	}
 	response.WriteHeader(http.StatusCreated)
-	response.WriteAsJson(newMessage)
+	// we only have to return uuid as id and not other fields of the newMessage
+	// so only return that much
+	response.WriteAsJson(map[string]string{"id": newMessage.Uuid})
 }

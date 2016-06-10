@@ -11,15 +11,11 @@ import (
 )
 
 // type that represents Message entity
-// Note: using tags we can control the encode-decode behavior of the object
-// Since in this particular case we would like to only present uuid-as-id,
-// I have tagged it as "id"
-// tagging with "-" makes it ignore the field during json encode
 type Message struct {
-	Id        int       `json:"-" db:"id"`
-	Uuid      string    `json:"id" db:"uuid"`
-	Text      string    `json:"-" db:"text"`
-	CreatedOn time.Time `json:"-" db:"created_on"`
+	Id        int       `json:"id" db:"id"`
+	Uuid      string    `json:"uuid" db:"uuid"`
+	Text      string    `json:"text" db:"text"`
+	CreatedOn time.Time `json:"created_on" db:"created_on"`
 }
 
 // Predefined error instance so that controller can easily figure out

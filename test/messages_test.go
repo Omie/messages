@@ -18,15 +18,18 @@ import (
 	"github.com/omie/messages/api"
 	_ "github.com/omie/messages/api/messages"
 	"github.com/omie/messages/lib/db"
-	"github.com/omie/messages/models/message"
 )
+
+type CreateMessageResponse struct {
+	Id string `json:"id"`
+}
 
 var (
 	server         *httptest.Server
 	reader         io.Reader
 	messagesUrl    string
 	messageText    string
-	createdMessage *message.Message
+	createdMessage *CreateMessageResponse
 )
 
 func init() {
@@ -66,10 +69,11 @@ func TestCreateMessage(t *testing.T) {
 	resp, _ := client.Do(r)
 
 	// save received createdMessage uuid to test get message operation
-	createdMessage = new(message.Message)
+	createdMessage = new(CreateMessageResponse)
 	json.NewDecoder(resp.Body).Decode(createdMessage)
+	fmt.Println(createdMessage)
 
-	if createdMessage.Uuid == "" {
+	if createdMessage.Id == "" {
 		t.Errorf("Expected UUID to be not empty")
 	}
 	if resp.StatusCode != 201 {
@@ -81,7 +85,7 @@ func TestCreateMessage(t *testing.T) {
 // test that message is retrieved properly
 func TestGetMessage(t *testing.T) {
 	u, _ := url.ParseRequestURI(messagesUrl)
-	u.Path = "/messages/" + createdMessage.Uuid
+	u.Path = "/messages/" + createdMessage.Id
 	urlStr := fmt.Sprintf("%v", u)
 	fmt.Println(urlStr)
 	client := &http.Client{}
