@@ -76,7 +76,7 @@ func TestCreateMessage(t *testing.T) {
 	if createdMessage.Id == "" {
 		t.Errorf("Expected UUID to be not empty")
 	}
-	if resp.StatusCode != 201 {
+	if resp.StatusCode != http.StatusCreated {
 		t.Errorf("Expected 201 to match: %d", resp.StatusCode)
 	}
 
@@ -93,7 +93,7 @@ func TestGetMessage(t *testing.T) {
 
 	resp, _ := client.Do(r)
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusOK {
 		t.Errorf("Expected 200 to match: %d", resp.StatusCode)
 	}
 
@@ -117,31 +117,9 @@ func TestInvalidMessageId(t *testing.T) {
 
 	resp, _ := client.Do(r)
 
-	if resp.StatusCode != 404 {
+	if resp.StatusCode != http.StatusNotFound {
 		t.Errorf("Expected 404 to match: %d", resp.StatusCode)
 	}
-}
-
-// Test that unexpected parameter in request result in bad request
-func TestUnexpectedParamInRequest(t *testing.T) {
-	data := url.Values{}
-	data.Set("text", messageText)
-	data.Set("unexpected", "blah")
-
-	u, _ := url.ParseRequestURI(messagesUrl)
-	urlStr := fmt.Sprintf("%v", u)
-
-	client := &http.Client{}
-	r, _ := http.NewRequest("POST", urlStr, bytes.NewBufferString(data.Encode()))
-	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	r.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
-
-	resp, _ := client.Do(r)
-
-	if resp.StatusCode != 400 {
-		t.Errorf("Expected 400 to match: %d", resp.StatusCode)
-	}
-
 }
 
 // Test that empty value for text parameter in request result in bad request
@@ -159,7 +137,28 @@ func TestEmptyParamInRequest(t *testing.T) {
 
 	resp, _ := client.Do(r)
 
-	if resp.StatusCode != 400 {
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("Expected 400 to match: %d", resp.StatusCode)
+	}
+
+}
+
+// Test that blank spaces as a value for text parameter in request result in bad request
+func TestBlankSpacesParamInRequest(t *testing.T) {
+	data := url.Values{}
+	data.Set("text", "             ")
+
+	u, _ := url.ParseRequestURI(messagesUrl)
+	urlStr := fmt.Sprintf("%v", u)
+
+	client := &http.Client{}
+	r, _ := http.NewRequest("POST", urlStr, bytes.NewBufferString(data.Encode()))
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	r.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+
+	resp, _ := client.Do(r)
+
+	if resp.StatusCode != http.StatusBadRequest {
 		t.Errorf("Expected 400 to match: %d", resp.StatusCode)
 	}
 
