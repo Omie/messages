@@ -77,5 +77,13 @@ about models:
     - It is responsible to do the database interaction to insert, select operations on its own as well
     - If there's anything related to how data is managed w.r.t Message entity, I know exactly where to look at!
 
+apiary for documentation
+    - its a simple markdown like format we can use to describe our API
+    - best part is mock server that it provides
+    - we can do this once docs are up and it will send back correct mock response!
+        `$ curl http://private-6513d-messages19.apiary-mock.com/messages/ -d text=heyho`
+    - frontend developer doesn't have to wait until backend developer actually puts up the API!
+
+
 
 
