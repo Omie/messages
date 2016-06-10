@@ -3,7 +3,7 @@ package messages
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/emicklei/go-restful"
-	"github.com/omie/messages/api"
+	apiv1 "github.com/omie/messages/api/v1"
 )
 
 // initialize Message resource and register web service
@@ -12,7 +12,7 @@ func init() {
 	ws := new(restful.WebService)
 	ws.Path("/messages")
 	initWebResource(ws)
-	api.AddWebService(ws)
+	apiv1.AddWebService(ws)
 }
 
 // setup endpoints
