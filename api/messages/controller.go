@@ -18,8 +18,9 @@ func init() {
 // setup endpoints
 func initWebResource(ws *restful.WebService) {
 	message_id := ws.PathParameter("message_id", "message id").DataType("string")
+	text := ws.PathParameter("text", "message text").DataType("string")
 
-	ws.Route(ws.GET("/{message_id}").
+	ws.Route(ws.GET("/{message_id:[a-zA-Z0-9\\-]+}").
 		To(getMessage).
 		Doc("get message").
 		Param(message_id).
@@ -29,5 +30,6 @@ func initWebResource(ws *restful.WebService) {
 		Consumes("application/x-www-form-urlencoded").
 		To(createMessage).
 		Doc("create message").
+		Param(text).
 		Operation("createMessage"))
 }
