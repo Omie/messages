@@ -1,9 +1,6 @@
 {
 	"ImportPath": "github.com/omie/messages",
 	"GoVersion": "go1.5",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
@@ -18,6 +15,11 @@
 		{
 			"ImportPath": "github.com/gorilla/schema",
 			"Rev": "08023a0215e7fc27a9aecd8b8c50913c40019478"
+		},
+		{
+			"ImportPath": "github.com/jmoiron/sqlx",
+			"Comment": "sqlx-v1.1-45-g3a92b1f",
+			"Rev": "3a92b1fd96032c4490fa618370fbf98ec69b680c"
 		},
 		{
 			"ImportPath": "github.com/mattn/go-sqlite3",
