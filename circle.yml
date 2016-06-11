@@ -4,6 +4,12 @@ machine:
       MESSAGES_DB_NAME: dbtest.sqlite
   services:
       - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build -t omie/messages .
+
 test:
  override:
    - ./test_run.sh
