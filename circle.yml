@@ -2,7 +2,8 @@ machine:
   environment:
       MESSAGES_DB_DRIVER: sqlite3
       MESSAGES_DB_NAME: dbtest.sqlite
-
+  services:
+      - docker
 test:
  override:
    - ./test_run.sh
@@ -11,4 +12,11 @@ general:
   branches:
     only:
       - master
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push omie/messages
 

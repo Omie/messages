@@ -84,6 +84,9 @@ apiary for documentation
         `$ curl http://private-6513d-messages19.apiary-mock.com/messages/ -d text=heyho`
     - frontend developer doesn't have to wait until backend developer actually puts up the API!
 
+circleci for continuous integration
+    - https://circleci.com/gh/Omie/messages
+
 
 
 
