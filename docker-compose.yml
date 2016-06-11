@@ -1,0 +1,17 @@
+# Messages
+#
+
+messages:
+    image: omie/messages
+    container_name: messages-api
+    ports:
+        - "8000:8000"
+    environment:
+        - MESSAGES_SERVER_HOST=localhost
+        - MESSAGES_SERVER_PORT=8000
+        - MESSAGES_DB_DRIVER=sqlite3
+        - MESSAGES_DB_NAME=/data/db.sqlite
+
+    volumes:
+        - ./data:/data
+
