@@ -6,8 +6,7 @@ ENV GOPATH /go/src/github.com/omie/messages/Godeps/_workspace/:/go
 ADD . /go/src/github.com/omie/messages
 WORKDIR /go/src/github.com/omie/messages
 
-RUN go install main.go
+RUN go install
 
-CMD [ "/go/bin/messages" ]
+CMD ["/go/bin/messages"]
 
-EXPOSE 8000
