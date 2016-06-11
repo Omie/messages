@@ -1,0 +1,14 @@
+machine:
+  environment:
+      MESSAGES_DB_DRIVER:sqlite3
+      MESSAGES_DB_NAME:dbtest.sqlite
+
+test:
+ override:
+   - ./test_run.sh
+
+general:
+  branches:
+    only:
+      - master # list of branches to build
+
