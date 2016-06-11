@@ -7,6 +7,7 @@ What is it
 
 A simple API to store and retrive messages
 
+[![circleci status](https://circleci.com/gh/Omie/messages.svg?&style=shield&circletoken=b69d9c0f2264fcff2222d6b431ab38a6e2a825a9)](https://circleci.com/gh/Omie/messages)
 
 Running the program
 --------------------
