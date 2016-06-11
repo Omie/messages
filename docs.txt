@@ -1,20 +1,31 @@
 
+what is included:
+    - API documentation using Apiary, it also provides mock server
+    - API database setup is done using sql migrations
+    - API server written in Golang, powered by sqlite
+    - Tests
+    - Helper scripts to build, run and test locally
+    - Dockerfile to build docker image
+    - Docker Compose configuration to perform deployment
+    - CircleCI configuration to handle continuous integration.
+    on code push to `master` branch, CircleCI will fetch, build, test, build docker image and publish new
+    docker image to docker hub as well.
+
 
 why go-restful?
-
     - it comes with good set of helper functions and features.
     Its really easy to keep adding features to this api, add more control,
     support CORS may be. Its all included in go-restful
 
     - it can also read request directly in our entity structure type and cries out if there's an error. didn't have many use cases
-    in this case to fully utilize many features of go-restful
+    in this api to fully utilize many features of go-restful
 
-    - it helps cleaner organization of code, controller is only registering handlers that are only related to that
+    - it helps cleaner and modular organization of code. e.g. controller is only registering handlers that are only related to that
     particular resource
-    - methods take care of handling the requests
+    - methods.go contain functions that take care of handling the requests
 
-    - easier versioning
-    if I have to add v2 of api then I only have to copy v1 to v2, then updated path in v2/messages controller to something like
+    - easier versioning of api
+    if I have to add v2 of api then I only have to copy v1 to v2, then updated path prefix in `apiv2.go` to something like
     `/v2/messages` and it's done.
     `apiv1.go` only serves the purpose of keeping it simple. It only adds the given `ws` with correctly versioned prefix.
     Hence, if we have like 50 endpoints in v1 already then, when we copy v1 to v2, we don't have to update Path at 50 places to add
